@@ -27,3 +27,15 @@ docker run -d \
   -e POSTGRES_PASSWORD=postgres \
   -p 5432:5432 \
   raulodev/postgres-postgis-pgvector:v17-3.5-0.8.2
+```
+
+## ⚙️ Supported Environment Variables
+
+Since the postgres-postgis-pgvector repository is an extension of the official Docker PostgreSQL repository, all environment variables supported there are also supported here:
+
+- `POSTGRES_PASSWORD`
+- `POSTGRES_USER`
+- `POSTGRES_DB`
+- `POSTGRES_INITDB_ARGS`
+- `POSTGRES_INITDB_WALDIR`
+- `POSTGRES_HOST_AUTH_METHOD`
