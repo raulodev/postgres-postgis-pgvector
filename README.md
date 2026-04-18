@@ -1,7 +1,26 @@
-# Dev postgres database with postgis and pgvector extension
+# PostgreSQL 17 + PostGIS 3.5.2 + pgvector 0.8.2
 
-## Versions
+[![GitHub](https://img.shields.io/badge/source-github-black?logo=github)](https://github.com/raulodev/postgres-postgis-pgvector)
 
-- Postgres: 17
-- PostGIS: 3.5
-- pgvector: 0.8.2
+Docker image based on `postgis/postgis:17-3.5` with the `pgvector` extension preinstalled.
+
+## 🚀 Features
+
+- PostgreSQL 17
+- PostGIS 3.5.2 (geospatial support)
+- pgvector 0.8.2 (vector similarity search for AI/ML use cases)
+- Minimal and clean build (no build dependencies in final image)
+
+## 📌 Included Extensions
+
+- `postgis`
+- `vector`
+
+## ⚡ Quick Start
+
+```bash
+docker run -d \
+  --name postgres-vector \
+  -e POSTGRES_PASSWORD=postgres \
+  -p 5432:5432 \
+  raulodev/postgres-postgis-pgvector:v17-3.5-0.8.2
