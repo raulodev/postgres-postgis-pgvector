@@ -4,4 +4,4 @@
 
 - Postgres: 17
 - PostGIS: 3.5
-- pgvector: 0.7.4
+- pgvector: 0.8.2

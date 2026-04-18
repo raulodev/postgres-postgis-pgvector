@@ -1,23 +1,23 @@
-FROM postgis/postgis:17-3.5-alpine AS builder
+FROM postgis/postgis:17-3.5
 
-ARG PGVECTOR_VERSION=v0.7.4
+ARG PGVECTOR_VERSION=v0.8.2
 
-RUN apk add --no-cache \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    wget \
     git \
-    build-base \
-    postgresql17-dev
-
-ENV PATH="/usr/lib/postgresql17/bin:$PATH"
-
-RUN git clone --branch ${PGVECTOR_VERSION} --depth 1 https://github.com/pgvector/pgvector.git /pgvector \
-    && cd /pgvector \
-    && make NO_LTO=1 \
-    && make install
-
-# ---------- Stage 2 ----------
-FROM postgis/postgis:17-3.5-alpine
-
-COPY --from=builder /usr/local/lib/postgresql/vector.so /usr/lib/postgresql17/
-COPY --from=builder /usr/local/share/postgresql/extension/vector* /usr/share/postgresql17/extension/
+    postgresql-server-dev-17 \
+    # Clean up to reduce layer size
+    && rm -rf /var/lib/apt/lists/* \
+    && git clone --branch ${PGVECTOR_VERSION} https://github.com/pgvector/pgvector.git /tmp/pgvector \
+    && cd /tmp/pgvector \
+    && make \
+    && make install \
+    # Clean up unnecessary files
+    && cd - \
+    && apt-get purge -y --auto-remove build-essential postgresql-server-dev-17 libpq-dev wget git \
+    && rm -rf /tmp/pgvector
 
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
